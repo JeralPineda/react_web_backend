@@ -1,6 +1,15 @@
 const express = require('express');
 require('dotenv').config();
+
 const cors = require('cors');
+
+let paths = require('path');
+
+// rutas del servidor
+paths = {
+   auth: `/api/${process.env.API_VERSION}/auth`,
+   usuarios: `/api/${process.env.API_VERSION}/usuarios`,
+};
 
 const { dbConnection } = require('./database/config');
 
@@ -20,7 +29,7 @@ app.use(express.static('public'));
 app.use(express.json());
 
 // Rutas
-// app.use('/api/auth', require('./routes/auth'));
+app.use(paths.usuarios, require('./routers/users'));
 // app.use('/api/events', require('./routes/events'));
 
 // Escuchar peticiones
