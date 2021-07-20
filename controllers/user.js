@@ -12,7 +12,6 @@ const signUp = async (req, res = response) => {
       //   verificar que el usuario existe
       if (user) {
          return res.status(400).json({
-            ok: false,
             msg: 'Ya existe un usuario con este correo',
          });
       }
@@ -24,16 +23,15 @@ const signUp = async (req, res = response) => {
       user.password = bcrypt.hashSync(password, salt);
 
       //   grabar en la base de datos
+      await user.save();
 
-      res.json({
-         msg: 'Endpoint de signUp',
+      res.status(201).json({
          user,
       });
    } catch (error) {
       console.log(error);
 
       res.status(500).json({
-         ok: false,
          msg: 'Hable con el administrador',
       });
    }
