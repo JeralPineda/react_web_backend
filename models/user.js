@@ -1,15 +1,32 @@
 const { Schema, model } = require('mongoose');
 
 const UserSchema = Schema({
-   name: String,
-   lastName: String,
+   name: {
+      type: String,
+      required: [true, 'El nombre es obligatorio'],
+   },
+   lastName: {
+      type: String,
+      required: [true, 'El apellido es obligatorio'],
+   },
    email: {
       type: String,
       unique: true,
    },
-   password: String,
-   role: String,
-   active: Boolean,
+   password: {
+      type: String,
+      required: [this.google === false, 'La contraseña es requerida.'],
+   },
+   role: {
+      type: String,
+      required: true,
+      default: 'admin',
+   },
+   active: {
+      type: Boolean,
+      required: true,
+      default: false,
+   },
 });
 
 // Limitamos la información de la petición a mostrar
