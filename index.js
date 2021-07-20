@@ -29,8 +29,8 @@ app.use(express.static('public'));
 app.use(express.json());
 
 // Rutas
+app.use(paths.auth, require('./routers/auth'));
 app.use(paths.usuarios, require('./routers/users'));
-// app.use('/api/events', require('./routes/events'));
 
 // Escuchar peticiones
 app.listen(process.env.PORT, () => {
