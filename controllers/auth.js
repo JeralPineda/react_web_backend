@@ -3,12 +3,13 @@ const bcryptjs = require('bcryptjs');
 
 const User = require('../models/user');
 
-const signUp = (req, res = response) => {
+const signIn = (req, res = response) => {
+   //    const user = new user();
    res.json({
-      msg: 'Endpoint de signUp',
+      msg: 'Endpoint de signIn',
    });
 };
 
 module.exports = {
-   signUp,
+   signIn,
 };
