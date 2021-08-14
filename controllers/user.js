@@ -12,7 +12,7 @@ const signUp = async (req, res = response) => {
       //   verificar que el usuario existe
       if (user) {
          return res.status(400).json({
-            msg: 'Ya existe un usuario con este correo',
+            msg: 'El usuario ya existe',
          });
       }
 
