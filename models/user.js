@@ -12,6 +12,8 @@ const UserSchema = Schema({
    email: {
       type: String,
       unique: true,
+      lowercase: true,
+      // formatear a minúsculas, esto se podría hacer en el controller
    },
    password: {
       type: String,
