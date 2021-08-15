@@ -32,7 +32,7 @@ const refreshToken = (id) => {
          payload,
          process.env.SECRET_JWT_SEED,
          {
-            expiresIn: '1hr',
+            expiresIn: '2hr',
          },
          (err, token) => {
             if (err) {
