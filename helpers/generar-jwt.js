@@ -23,6 +23,30 @@ const generarJWT = (uid = '', name = '', lastName = '', email = '', rol = '') =>
    });
 };
 
+const refreshToken = (id) => {
+   return new Promise((resolve, reject) => {
+      const payload = { id };
+
+      // Generar el token
+      jwt.sign(
+         payload,
+         process.env.SECRET_JWT_SEED,
+         {
+            expiresIn: '1hr',
+         },
+         (err, token) => {
+            if (err) {
+               console.log(err);
+               reject('No se pudo generar el jsonwebtoken');
+            } else {
+               resolve(token);
+            }
+         }
+      );
+   });
+};
+
 module.exports = {
    generarJWT,
+   refreshToken,
 };
