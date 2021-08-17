@@ -34,13 +34,12 @@ const signIn = async (req, res = response) => {
       }
 
       //Generar el JWT
-      const token = await generarJWT(user.id, user.name, user.lastName, user.email, user.role);
+      const token = await generarJWT(user);
 
       //   Generar el refreshToken
       const refresh = await refreshToken(user.id);
 
       res.status(200).json({
-         msg: 'Login correcto',
          accessToken: token,
          refreshToken: refresh,
       });
