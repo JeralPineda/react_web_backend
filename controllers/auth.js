@@ -3,6 +3,7 @@ const bcryptjs = require('bcryptjs');
 
 const User = require('../models/user');
 const { generarJWT, refreshToken } = require('../helpers/generar-jwt');
+const { willExpiredToken } = require('../middleware/validar-jwt');
 
 const signIn = async (req, res = response) => {
    const { email, password } = req.body;
@@ -52,6 +53,51 @@ const signIn = async (req, res = response) => {
    }
 };
 
+const refreshAccessToken = async (req, res = response) => {
+   const { refreshToken } = req.body;
+
+   if (!refreshToken) {
+      return res.status(404).json({
+         msg: 'El token es obligatorio',
+      });
+   }
+
+   try {
+      const { id, isTokenExpired } = willExpiredToken(refreshToken);
+
+      if (isTokenExpired) {
+         return res.status(404).json({
+            msg: 'El refreshToken ha expirado',
+         });
+      }
+
+      //   consultamos el usuario en la BD con el id del token
+      const user = await User.findById(id);
+
+      //   verificamos que exista el usuario
+      if (!user) {
+         return res.status(404).json({
+            msg: 'Usuario no encontrado',
+         });
+      }
+
+      //Generar el JWT
+      const token = await generarJWT(user);
+
+      res.json({
+         accessToken: token,
+         refreshToken,
+      });
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         msg: 'Hable con el administrador',
+      });
+   }
+};
+
 module.exports = {
    signIn,
+   refreshAccessToken,
 };
