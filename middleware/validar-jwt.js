@@ -20,10 +20,9 @@ const validarJWT = (req, res = response, next) => {
    }
 
    try {
-      const { uid, iat, exp } = jwt.verify(token, process.env.SECRET_JWT_SEED);
+      const { uid } = jwt.verify(token, process.env.SECRET_JWT_SEED);
 
       req.uid = uid;
-      //   req.name = name;
    } catch (error) {
       console.log(error);
       res.status(401).json({
@@ -34,6 +33,24 @@ const validarJWT = (req, res = response, next) => {
    next();
 };
 
+const willExpiredToken = (token) => {
+   const { id, exp } = jwt.decode(token, process.env.SECRET_JWT_SEED);
+
+   const currentDate = (Date.now() + 60) / 1000;
+
+   if (currentDate > exp) {
+      return {
+         isTokenExpired: true,
+      };
+   }
+
+   return {
+      id,
+      isTokenExpired: false,
+   };
+};
+
 module.exports = {
    validarJWT,
+   willExpiredToken,
 };
