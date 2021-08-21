@@ -37,6 +37,29 @@ const signUp = async (req, res = response) => {
    }
 };
 
+const getUsers = async (req, res = response) => {
+   try {
+      const [users] = await Promise.all([User.find()]);
+
+      if (!users) {
+         res.status(404).json({
+            msg: 'No se ha encontrado ningún usuario',
+         });
+      }
+
+      res.json({
+         users,
+      });
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         msg: 'Hable con el administrador',
+      });
+   }
+};
+
 module.exports = {
    signUp,
+   getUsers,
 };
