@@ -39,7 +39,7 @@ const signUp = async (req, res = response) => {
 
 const getUsers = async (req, res = response) => {
    try {
-      const [users] = await Promise.all([User.find()]);
+      const users = await User.find();
 
       if (!users) {
          res.status(404).json({
@@ -63,7 +63,8 @@ const getUsersActive = async (req, res = response) => {
    const { active } = req.query;
 
    try {
-      const [users] = await Promise.all([User.find({ active })]);
+      //   const [users] = await Promise.all([User.find({ active })]);
+      const users = await User.find({ active });
 
       if (!users) {
          res.status(404).json({
