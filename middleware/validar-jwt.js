@@ -20,9 +20,9 @@ const validarJWT = (req, res = response, next) => {
    }
 
    try {
-      const { uid } = jwt.verify(token, process.env.SECRET_JWT_SEED);
+      const payload = jwt.verify(token, process.env.SECRET_JWT_SEED);
 
-      req.uid = uid;
+      req.user = payload;
    } catch (error) {
       console.log(error);
       res.status(401).json({
