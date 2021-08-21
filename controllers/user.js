@@ -38,6 +38,9 @@ const signUp = async (req, res = response) => {
 };
 
 const getUsers = async (req, res = response) => {
+   const { user } = req;
+
+   console.log(user);
    try {
       const [users] = await Promise.all([User.find()]);
 
