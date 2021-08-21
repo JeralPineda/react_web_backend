@@ -6,7 +6,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { signUp, getUsers } = require('../controllers/user');
+const { signUp, getUsers, getUsersActive } = require('../controllers/user');
 const { validarCampos } = require('../middleware/validar-campos');
 const { validarJWT } = require('../middleware/validar-jwt');
 
@@ -26,5 +26,6 @@ router.post(
 );
 
 router.get('/users', validarJWT, getUsers);
+router.get('/users-active', validarJWT, getUsersActive);
 
 module.exports = router;
