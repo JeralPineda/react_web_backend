@@ -29,6 +29,9 @@ const UserSchema = Schema({
       required: true,
       default: false,
    },
+   avatar: {
+      type: String,
+   },
 });
 
 // Limitamos la información de la petición a mostrar
