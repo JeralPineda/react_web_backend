@@ -119,9 +119,41 @@ const uploadAvatar = async (req, res = response) => {
    }
 };
 
+const mostrarImagen = (req, res = response) => {
+   const { avatarName } = req.params;
+   const filePath = './uploads/avatar/' + avatarName;
+
+   try {
+      if (!fs.existsSync(filePath)) {
+         return res.status(400).json({
+            msg: `El avatar que buscas no existe.`,
+         });
+      }
+
+      //   Mandamos el archivo
+      res.sendFile(path.resolve(filePath));
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         msg: 'Hable con el administrador',
+      });
+   }
+
+   // Mandamos la imagen si existe en el servidor
+   // Hay que borrar la imagen del servidor
+
+   // Validamos si existe el archivo
+
+   //  Si no existe una imagen en el servidor, mandamos una imagen por defecto
+   //    const pathImgDefault = path.join(__dirname, '../assets/img/no-avatar.png');
+   //    res.sendFile(pathImgDefault);
+};
+
 module.exports = {
    signUp,
    getUsers,
    getUsersActive,
    uploadAvatar,
+   mostrarImagen,
 };
