@@ -1,7 +1,10 @@
 const { response } = require('express');
 const bcrypt = require('bcryptjs');
+const path = require('path');
+const fs = require('fs');
 
 const User = require('../models/user');
+const { subirArchivo } = require('../helpers/subir-archivo');
 
 const signUp = async (req, res = response) => {
    const { lastName, name, password, email } = req.body;
@@ -84,8 +87,41 @@ const getUsersActive = async (req, res = response) => {
    }
 };
 
+const uploadAvatar = async (req, res = response) => {
+   const { id } = req.params;
+
+   try {
+      const modelo = await User.findById(id);
+
+      console.log(modelo);
+
+      if (!modelo) {
+         return res.status(400).json({
+            msg: `No se ha encontrado ningún usuario`,
+         });
+      }
+
+      // Directorio donde se guardara la imagen
+      const nombre = await subirArchivo(req.files, undefined, 'avatar');
+
+      modelo.avatar = nombre;
+
+      // Guardamos en la BD
+      await modelo.save();
+
+      res.json({ user: modelo.avatar });
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         msg: 'Hable con el administrador',
+      });
+   }
+};
+
 module.exports = {
    signUp,
    getUsers,
    getUsersActive,
+   uploadAvatar,
 };

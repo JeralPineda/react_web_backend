@@ -6,9 +6,10 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { signUp, getUsers, getUsersActive } = require('../controllers/user');
+const { signUp, getUsers, getUsersActive, uploadAvatar } = require('../controllers/user');
 const { validarCampos } = require('../middleware/validar-campos');
 const { validarJWT } = require('../middleware/validar-jwt');
+const { validarArchivoSubir } = require('../middleware/validar-archivo');
 
 const router = Router();
 
@@ -27,5 +28,16 @@ router.post(
 
 router.get('/users', validarJWT, getUsers);
 router.get('/users-active', validarJWT, getUsersActive);
+router.put(
+   '/upload-avatar/:id',
+   [
+      //
+      validarArchivoSubir,
+      validarJWT,
+      check('id', 'el id debe de ser de Mongo').isMongoId(),
+      validarCampos,
+   ],
+   uploadAvatar
+);
 
 module.exports = router;
