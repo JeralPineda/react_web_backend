@@ -1,4 +1,5 @@
 const express = require('express');
+const fileUpload = require('express-fileupload');
 require('dotenv').config();
 
 const cors = require('cors');
@@ -27,6 +28,15 @@ app.use(express.static('public'));
 
 // Lectura y parseo del body
 app.use(express.json());
+
+//   Fileupload - Carga de archivos
+app.use(
+   fileUpload({
+      useTempFiles: true,
+      tempFileDir: '/tmp/',
+      createParentPath: true, //crea el directorio si no existe
+   })
+);
 
 // Rutas
 app.use(paths.auth, require('./routers/auth'));
