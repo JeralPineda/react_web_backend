@@ -93,8 +93,6 @@ const uploadAvatar = async (req, res = response) => {
    try {
       const modelo = await User.findById(id);
 
-      console.log(modelo);
-
       if (!modelo) {
          return res.status(400).json({
             msg: `No se ha encontrado ningún usuario`,
@@ -149,20 +147,19 @@ const updateUser = async (req, res = response) => {
    //    userData.email = req.body.email.toLowerCase();
 
    try {
-      const user = await User.findById(id, userData);
+      if (userData.password) {
+         //   encriptar la contraseña
+         const salt = bcrypt.genSaltSync();
+         userData.password = bcrypt.hashSync(userData.password, salt);
+      }
+
+      const user = await User.findByIdAndUpdate(id, userData);
 
       if (!user) {
          res.status(400).json({
             msg: 'No se ha encontrado ningún usuario',
          });
       }
-
-      //   encriptar la contraseña
-      const salt = bcrypt.genSaltSync();
-      user.password = bcrypt.hashSync(userData.password, salt);
-
-      //   grabar en la base de datos
-      await user.save();
 
       res.json({
          msg: 'Usuario actualizado correctamente',
