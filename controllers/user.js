@@ -149,13 +149,20 @@ const updateUser = async (req, res = response) => {
    //    userData.email = req.body.email.toLowerCase();
 
    try {
-      const user = await User.findByIdAndUpdate(id, userData);
+      const user = await User.findById(id, userData);
 
       if (!user) {
          res.status(400).json({
             msg: 'No se ha encontrado ningún usuario',
          });
       }
+
+      //   encriptar la contraseña
+      const salt = bcrypt.genSaltSync();
+      user.password = bcrypt.hashSync(userData.password, salt);
+
+      //   grabar en la base de datos
+      await user.save();
 
       res.json({
          msg: 'Usuario actualizado correctamente',
