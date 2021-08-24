@@ -173,6 +173,37 @@ const updateUser = async (req, res = response) => {
    }
 };
 
+const activateUser = async (req, res = response) => {
+   const { id } = req.params;
+   const { active } = req.body;
+
+   try {
+      const user = await User.findByIdAndUpdate(id, { active });
+
+      if (!user) {
+         return res.status(400).json({
+            msg: `No se ha encontrado ningún usuario`,
+         });
+      }
+
+      if (!active) {
+         return res.status(200).json({
+            msg: `Usuario desactivado correctamente`,
+         });
+      }
+
+      res.json({
+         msg: `Usuario activado correctamente`,
+      });
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         msg: 'Hable con el administrador',
+      });
+   }
+};
+
 module.exports = {
    signUp,
    getUsers,
@@ -180,4 +211,5 @@ module.exports = {
    uploadAvatar,
    mostrarImagen,
    updateUser,
+   activateUser,
 };

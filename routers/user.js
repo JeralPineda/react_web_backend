@@ -6,7 +6,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { signUp, getUsers, getUsersActive, uploadAvatar, mostrarImagen, updateUser } = require('../controllers/user');
+const { signUp, getUsers, getUsersActive, uploadAvatar, mostrarImagen, updateUser, activateUser } = require('../controllers/user');
 const { validarCampos } = require('../middleware/validar-campos');
 const { validarJWT } = require('../middleware/validar-jwt');
 const { validarArchivoSubir } = require('../middleware/validar-archivo');
@@ -53,6 +53,17 @@ router.put(
       validarCampos,
    ],
    updateUser
+);
+
+router.put(
+   '/activate-user/:id',
+   [
+      //
+      validarJWT,
+      check('id', 'el id debe de ser de Mongo').isMongoId(),
+      validarCampos,
+   ],
+   activateUser
 );
 
 module.exports = router;
