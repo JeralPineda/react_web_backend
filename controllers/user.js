@@ -143,7 +143,10 @@ const mostrarImagen = (req, res = response) => {
 
 const updateUser = async (req, res = response) => {
    const { id } = req.params;
-   const userData = req.body;
+   let userData = req.body;
+
+   //  convertimos el email a minúsculas
+   //    userData.email = req.body.email.toLowerCase();
 
    try {
       const user = await User.findByIdAndUpdate(id, userData);
