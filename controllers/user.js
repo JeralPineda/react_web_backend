@@ -141,10 +141,36 @@ const mostrarImagen = (req, res = response) => {
    }
 };
 
+const updateUser = async (req, res = response) => {
+   const { id } = req.params;
+   const userData = req.body;
+
+   try {
+      const user = await User.findByIdAndUpdate(id, userData);
+
+      if (!user) {
+         res.status(400).json({
+            msg: 'No se ha encontrado ningún usuario',
+         });
+      }
+
+      res.json({
+         msg: 'Usuario actualizado correctamente',
+      });
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         msg: 'Hable con el administrador',
+      });
+   }
+};
+
 module.exports = {
    signUp,
    getUsers,
    getUsersActive,
    uploadAvatar,
    mostrarImagen,
+   updateUser,
 };
