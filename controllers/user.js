@@ -204,6 +204,30 @@ const activateUser = async (req, res = response) => {
    }
 };
 
+const deleteUser = async (req, res = response) => {
+   const { id } = req.params;
+
+   try {
+      const user = await User.findByIdAndRemove(id);
+
+      if (!user) {
+         return res.status(400).json({
+            msg: `No se ha encontrado ningún usuario`,
+         });
+      }
+
+      res.json({
+         msg: 'El usuario ha sido eliminado correctamente',
+      });
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         msg: 'Hable con el administrador',
+      });
+   }
+};
+
 module.exports = {
    signUp,
    getUsers,
@@ -212,4 +236,5 @@ module.exports = {
    mostrarImagen,
    updateUser,
    activateUser,
+   deleteUser,
 };
