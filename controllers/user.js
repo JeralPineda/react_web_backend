@@ -7,7 +7,7 @@ const User = require('../models/user');
 const { subirArchivo } = require('../helpers/subir-archivo');
 
 const signUp = async (req, res = response) => {
-   const { lastName, name, password, email } = req.body;
+   const { password, email } = req.body;
 
    try {
       let user = await User.findOne({ email });
@@ -228,6 +228,61 @@ const deleteUser = async (req, res = response) => {
    }
 };
 
+const signUpAdmin = async (req, res = response) => {
+   const { name, lastName, email, role, password } = req.body;
+
+   if (!password) {
+      return res.status(400).json({
+         msg: 'La contraseña es obligatoria',
+      });
+   }
+
+   if (password.length < 6) {
+      return res.status(400).json({
+         msg: 'La contraseña debe contener al menos 6 dígitos',
+      });
+   }
+
+   try {
+      let user = await User.findOne({ email });
+
+      //   verificar que el usuario existe
+      if (user) {
+         return res.status(400).json({
+            msg: 'El usuario ya existe',
+         });
+      }
+
+      const data = {
+         name,
+         lastName,
+         email,
+         password,
+         role,
+         active: true,
+      };
+
+      user = new User(data);
+
+      //   encriptar la contraseña
+      const salt = bcrypt.genSaltSync();
+      user.password = bcrypt.hashSync(password, salt);
+
+      //   grabar en la base de datos
+      await user.save();
+
+      res.json({
+         msg: 'Usuario creado correctamente',
+      });
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         msg: 'Hable con el administrador',
+      });
+   }
+};
+
 module.exports = {
    signUp,
    getUsers,
@@ -237,4 +292,5 @@ module.exports = {
    updateUser,
    activateUser,
    deleteUser,
+   signUpAdmin,
 };
