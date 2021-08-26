@@ -66,13 +66,11 @@ const updateMenu = async (req, res = response) => {
 
       if (!menu) {
          return res.status(400).json({
-            ok: false,
             msg: 'No se ha encontrado ningún menu',
          });
       }
 
       res.json({
-         ok: true,
          msg: 'Menu actualizado correctamente',
       });
    } catch (error) {
@@ -93,20 +91,17 @@ const activateMenu = async (req, res = response) => {
 
       if (!menu) {
          return res.status(400).json({
-            ok: false,
             msg: 'No se ha encontrado ningún menu',
          });
       }
 
       if (!active) {
          return res.json({
-            ok: true,
             msg: 'Menu desactivado correctamente',
          });
       }
 
       res.json({
-         ok: true,
          msg: 'Menu activado correctamente',
       });
    } catch (error) {
