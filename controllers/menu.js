@@ -65,7 +65,7 @@ const updateMenu = async (req, res = response) => {
       const menu = await Menu.findByIdAndUpdate(id, menuData);
 
       if (!menu) {
-         res.status(400).json({
+         return res.status(400).json({
             ok: false,
             msg: 'No se ha encontrado ningún menu',
          });
@@ -84,8 +84,43 @@ const updateMenu = async (req, res = response) => {
    }
 };
 
+const activateMenu = async (req, res = response) => {
+   const { id } = req.params;
+   const { active } = req.body;
+
+   try {
+      const menu = await Menu.findByIdAndUpdate(id, { active });
+
+      if (!menu) {
+         return res.status(400).json({
+            ok: false,
+            msg: 'No se ha encontrado ningún menu',
+         });
+      }
+
+      if (!active) {
+         return res.json({
+            ok: true,
+            msg: 'Menu desactivado correctamente',
+         });
+      }
+
+      res.json({
+         ok: true,
+         msg: 'Menu activado correctamente',
+      });
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         msg: 'Hable con el administrador',
+      });
+   }
+};
+
 module.exports = {
    addMenu,
    getMenus,
    updateMenu,
+   activateMenu,
 };
