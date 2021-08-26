@@ -12,17 +12,18 @@ const MenuSchema = Schema({
    },
    active: {
       type: Boolean,
+      default: false,
    },
 });
 
 // Limitamos la información de la petición a mostrar
 MenuSchema.methods.toJSON = function () {
-   const { __v, _id, ...menus } = this.toObject();
+   const { __v, _id, ...menu } = this.toObject();
 
    //    Remplazamos el nombre de _id por uid
-   menus.uid = _id;
+   menu.uid = _id;
 
-   return menus;
+   return menu;
 };
 
 module.exports = model('Menu', MenuSchema);
