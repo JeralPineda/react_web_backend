@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { addMenu } = require('../controllers/menu');
+const { addMenu, getMenus } = require('../controllers/menu');
 const { validarJWT } = require('../middleware/validar-jwt');
 // const { validarCampos } = require('../middleware/validar-campos');
 
@@ -18,5 +18,7 @@ router.post(
    ],
    addMenu
 );
+
+router.get('/get-menus', getMenus);
 
 module.exports = router;

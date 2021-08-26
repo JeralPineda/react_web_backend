@@ -35,6 +35,29 @@ const addMenu = async (req, res = response) => {
    }
 };
 
+const getMenus = async (req, res = response) => {
+   try {
+      const menu = await Menu.find().sort({ order: 'asc' });
+
+      if (!menu) {
+         return res.status(400).json({
+            msg: 'No se ha encontrado ningún elemento en el menu',
+         });
+      }
+
+      res.json({
+         menu,
+      });
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         msg: 'Hable con el administrador',
+      });
+   }
+};
+
 module.exports = {
    addMenu,
+   getMenus,
 };
