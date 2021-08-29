@@ -113,9 +113,34 @@ const activateMenu = async (req, res = response) => {
    }
 };
 
+const deleteMenu = async (req, res = response) => {
+   const { id } = req.params;
+
+   try {
+      const menu = await Menu.findByIdAndRemove(id);
+
+      if (!menu) {
+         return res.status(400).json({
+            msg: `No se ha encontrado ningún menu`,
+         });
+      }
+
+      res.json({
+         msg: 'El menu ha sido eliminado correctamente',
+      });
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         msg: 'Hable con el administrador',
+      });
+   }
+};
+
 module.exports = {
    addMenu,
    getMenus,
    updateMenu,
    activateMenu,
+   deleteMenu,
 };

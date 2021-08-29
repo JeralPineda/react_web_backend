@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { addMenu, getMenus, updateMenu, activateMenu } = require('../controllers/menu');
+const { addMenu, getMenus, updateMenu, activateMenu, deleteMenu } = require('../controllers/menu');
 const { validarJWT } = require('../middleware/validar-jwt');
 const { validarCampos } = require('../middleware/validar-campos');
 
@@ -24,5 +24,7 @@ router.get('/get-menus', getMenus);
 router.put('/update-menu/:id', [validarJWT, check('id', 'el id debe de ser de Mongo').isMongoId(), validarCampos], updateMenu);
 
 router.put('/activate-menu/:id', [validarJWT, check('id', 'el id debe de ser de Mongo').isMongoId(), validarCampos], activateMenu);
+
+router.delete('/delete-menu/:id', [validarJWT, check('id', 'el id debe de ser de Mongo').isMongoId(), validarCampos], deleteMenu);
 
 module.exports = router;
