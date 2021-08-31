@@ -6,7 +6,7 @@ const addMenu = async (req, res = response) => {
    const { title, url, order, active } = req.body;
    try {
       const data = {
-         title,
+         title: title.charAt(0).toUpperCase() + title.slice(1),
          url,
          order,
          active,
