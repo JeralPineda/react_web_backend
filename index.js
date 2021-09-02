@@ -12,6 +12,7 @@ paths = {
    user: `/api/${process.env.API_VERSION}/user`,
    menu: `/api/${process.env.API_VERSION}/menu`,
    newsletter: `/api/${process.env.API_VERSION}/newsletter`,
+   courses: `/api/${process.env.API_VERSION}/courses`,
 };
 
 const { dbConnection } = require('./database/config');
@@ -45,6 +46,7 @@ app.use(paths.auth, require('./routers/auth'));
 app.use(paths.user, require('./routers/user'));
 app.use(paths.menu, require('./routers/menu'));
 app.use(paths.newsletter, require('./routers/newsletter'));
+app.use(paths.courses, require('./routers/courses'));
 
 // Escuchar peticiones
 app.listen(process.env.PORT, () => {
