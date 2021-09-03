@@ -11,9 +11,6 @@ router.post(
    [
       //
       validarJWT,
-      //   check('email', 'El correo es obligatorio').isEmail(),
-      //   check('password', 'El password debe contener al menos 6 caracteres').isLength({ min: 6 }),
-      //   validarCampos,
    ],
    addCourse
 );
