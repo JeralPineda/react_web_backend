@@ -1,4 +1,4 @@
-const { response } = require('express');
+const { response, request } = require('express');
 const Course = require('../models/courses');
 
 const addCourse = async (req, res = response) => {
@@ -68,7 +68,35 @@ const getCourses = async (req, res = response) => {
    }
 };
 
+const deleteCourse = async (req = request, res) => {
+   const { id } = req.params;
+
+   try {
+      const course = await Course.findByIdAndRemove(id);
+
+      if (!course) {
+         return res.status(400).json({
+            code: 400,
+            msg: 'No se ha encontrado ningún curso',
+         });
+      }
+
+      res.json({
+         code: 200,
+         msg: 'El curso ha sido eliminado correctamente',
+      });
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         code: 500,
+         msg: 'Hable con el administrador',
+      });
+   }
+};
+
 module.exports = {
    addCourse,
    getCourses,
+   deleteCourse,
 };
