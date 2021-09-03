@@ -95,8 +95,37 @@ const deleteCourse = async (req = request, res) => {
    }
 };
 
+const updateCourse = async (req = request, res) => {
+   const body = req.body;
+   const { id } = req.params;
+
+   try {
+      const course = await Course.findByIdAndUpdate(id, body);
+
+      if (!course) {
+         return res.status(404).json({
+            code: 404,
+            msg: 'No se ha encontrado ningún curso',
+         });
+      }
+
+      res.json({
+         code: 200,
+         msg: 'Curso actualizado correctamente',
+      });
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         code: 500,
+         msg: 'Hable con el administrador',
+      });
+   }
+};
+
 module.exports = {
    addCourse,
    getCourses,
    deleteCourse,
+   updateCourse,
 };
