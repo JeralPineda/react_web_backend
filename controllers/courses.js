@@ -1,4 +1,4 @@
-const courses = require('../models/courses');
+const { response } = require('express');
 const Course = require('../models/courses');
 
 const addCourse = async (req, res = response) => {
@@ -43,6 +43,32 @@ const addCourse = async (req, res = response) => {
    }
 };
 
+const getCourses = async (req, res = response) => {
+   try {
+      const courses = await Course.find().sort({ order: 'asc' });
+
+      if (!courses) {
+         return res.status(400).json({
+            code: 400,
+            msg: 'No se ha encontrado ningún elemento en el cursos',
+         });
+      }
+
+      res.json({
+         code: 200,
+         courses,
+      });
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         code: 500,
+         msg: 'Hable con el administrador',
+      });
+   }
+};
+
 module.exports = {
    addCourse,
+   getCourses,
 };
