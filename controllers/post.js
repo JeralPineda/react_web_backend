@@ -109,8 +109,64 @@ const updatePost = async (req = request, res) => {
    }
 };
 
+const deletePost = async (req = request, res) => {
+   const { id } = req.params;
+
+   try {
+      const post = await Post.findByIdAndRemove(id);
+
+      if (!post) {
+         return res.status(404).json({
+            code: 404,
+            msg: 'No se ha encontrado ningun post',
+         });
+      }
+
+      res.json({
+         code: 200,
+         msg: 'Post eliminado correctamente',
+      });
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         code: 500,
+         msg: 'Hable con el administrador',
+      });
+   }
+};
+
+const getPost = async (req = request, res) => {
+   const { url } = req.params;
+
+   try {
+      const post = await Post.findOne({ url });
+
+      if (!post) {
+         return res.status(404).json({
+            code: 404,
+            msg: 'No se ha encontrado ningun post',
+         });
+      }
+
+      res.json({
+         code: 200,
+         post,
+      });
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         code: 500,
+         msg: 'Hable con el administrador',
+      });
+   }
+};
+
 module.exports = {
    addPost,
    getPosts,
    updatePost,
+   deletePost,
+   getPost,
 };

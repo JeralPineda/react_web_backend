@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { addPost, getPosts, updatePost } = require('../controllers/post');
+const { addPost, getPosts, updatePost, deletePost, getPost } = require('../controllers/post');
 const { validarCampos } = require('../middleware/validar-campos');
 const { validarJWT } = require('../middleware/validar-jwt');
 
@@ -21,5 +21,18 @@ router.put(
    ],
    updatePost
 );
+
+router.delete(
+   '/delete-post/:id',
+   [
+      //
+      validarJWT,
+      check('id', 'el id debe de ser de Mongo').isMongoId(),
+      validarCampos,
+   ],
+   deletePost
+);
+
+router.get('/get-post/:url', getPost);
 
 module.exports = router;
