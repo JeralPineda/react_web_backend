@@ -1,21 +1,29 @@
+const { now } = require('moment');
 const { Schema, model } = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
-const PostSchema = Schema({
-   title: {
-      type: String,
+const PostSchema = Schema(
+   {
+      title: {
+         type: String,
+      },
+      url: {
+         type: String,
+         unique: true,
+      },
+      description: {
+         type: String,
+      },
+      date: {
+         type: Date,
+         //  default: Date.now, //fecha por defecto
+      },
    },
-   url: {
-      type: String,
-      unique: true,
-   },
-   description: {
-      type: String,
-   },
-   date: {
-      type: Date,
-   },
-});
+   {
+      //fecha de creacion y de actualizacion
+      //   timestamps: true,
+   }
+);
 
 PostSchema.plugin(mongoosePaginate);
 
