@@ -81,7 +81,36 @@ const getPosts = async (req = request, res) => {
    }
 };
 
+const updatePost = async (req = request, res) => {
+   const data = req.body;
+   const { id } = req.params;
+
+   try {
+      const post = await Post.findByIdAndUpdate(id, data);
+
+      if (!post) {
+         return res.status(404).json({
+            code: 404,
+            msg: 'No se ha encontrado ningun post',
+         });
+      }
+
+      res.json({
+         code: 200,
+         msg: 'Post actualizado correctamente',
+      });
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         code: 500,
+         msg: 'Hable con el administrador',
+      });
+   }
+};
+
 module.exports = {
    addPost,
    getPosts,
+   updatePost,
 };
