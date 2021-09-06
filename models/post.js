@@ -17,7 +17,7 @@ const PostSchema = Schema({
    },
 });
 
-mySchema.plugin(mongoosePaginate);
+PostSchema.plugin(mongoosePaginate);
 
 // Limitamos la información de la petición a mostrar
 PostSchema.methods.toJSON = function () {
