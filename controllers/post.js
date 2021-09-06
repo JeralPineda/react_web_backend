@@ -1,5 +1,6 @@
 const { request } = require('express');
 const Post = require('../models/post');
+const { options } = require('../routers/post');
 
 const addPost = async (req = request, res) => {
    const { title, url, description, date } = req.body;
@@ -47,6 +48,40 @@ const addPost = async (req = request, res) => {
    }
 };
 
+const getPosts = async (req = request, res) => {
+   const { page = 1, limit = 10 } = req.query;
+
+   const options = {
+      page,
+      limit: parseInt(limit),
+      sort: { date: 'desc' },
+   };
+
+   try {
+      const posts = await Post.paginate({}, options);
+
+      if (!posts) {
+         return res.status(404).json({
+            code: 404,
+            msg: 'No se ha encontrado ningun post',
+         });
+      }
+
+      res.json({
+         code: 200,
+         posts,
+      });
+   } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+         code: 500,
+         msg: 'Hable con el administrador',
+      });
+   }
+};
+
 module.exports = {
    addPost,
+   getPosts,
 };
